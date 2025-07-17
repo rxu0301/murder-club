@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>범인 지목 - 동아리 살인사건</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 범인 지목 페이지 스타일 */
+        .suspect-identification-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        /* 첫 번째 사진 형식의 카드 스타일 */
+        .suspect-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+
+        .suspect-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .suspect-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .suspect-emoji {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .suspect-name {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #3a0ca3;
+            margin-bottom: 0.5rem;
+        }
+
+        .suspect-role {
+            color: #6c757d;
+            margin-bottom: 1rem;
+        }
+
+        .suspect-trait {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .suspect-trait-title {
+            font-weight: 500;
+        }
+
+        /* 두 번째 사진 형식의 모달 스타일 */
+        .suspect-modal-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 50px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .suspect-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .suspect-icon:hover, .suspect-icon.active {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .suspect-icon.active {
+            border: 3px solid #3a0ca3;
+        }
+
+        /* 모달 스타일 */
+        .identification-modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            overflow-y: auto;
+        }
+
+        .identification-modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            animation: modalAppear 0.3s ease;
+        }
+
+        .close-identification-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #6c757d;
+            cursor: pointer;
+        }
+
+        .identification-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .confirm-identification {
+            background-color: #d00000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .confirm-identification:hover {
+            background-color: #b00000;
+            transform: translateY(-2px);
+        }
+
+        .cancel-identification {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cancel-identification:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        /* 반응형 스타일 */
+        @media (max-width: 768px) {
+            .suspect-cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .suspect-modal-icons {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="suspect-identification-header">
+            <h2>범인 지목</h2>
+            <p class="instruction">수집한 단서와 대화를 바탕으로 범인을 지목하세요.</p>
+        </div>
+
+        <!-- 첫 번째 사진 형식의 카드 레이아웃 -->
+        <div class="suspect-cards-grid">
+            <!-- 이한결 -->
+            <div class="suspect-card" data-suspect="hangyeol">
+                <div class="suspect-emoji">🧪</div>
+                <div class="suspect-name">이한결</div>
+                <div class="suspect-role">과학 동아리 회장</div>
+                
+                <div class="suspect-trait">
+                    <span class="suspect-trait-title">특기:</span> 발표, 실험 리딩
+                </div>
+                
+                <div class="suspect-trait">
+                    <span class="suspect-trait-title">좋아하는 것:</span> 물리 실험, 정리정돈
+                </div>
+                
+                <div class="suspect-trait">
+                    <span class="suspect-trait-title">피해자와의 관계:</span> 리더로서 윤지우를 챙겨왔지만, 최근 실험실 정리 문제로 다툰 적 있음
+                </div>
+                
+                <div class="suspect-trait">
+                    <span class="suspect-trait-title">성격:</span> 책임감 있고 냉철함. 격식을 차리는 논리적인 말투 사용.
+                </div>
+            </div>
+
+            <!-- 김소이 -->
+            <div class="suspect-card" data-suspect="soi">
+                <div class="suspect-emoji">📝</div>
+                <div class="suspect-name">김소이</div>
+                <div class="suspect-role">문예부</div>
+                
+                <div class="suspect-trait">
+                    <span class="suspect-trait-title">특기:</span> 감성 글쓰기, 시 창작
+                </div>
+                
+                <div class="suspect-trait">
+                    <span class="suspect-trait-title">좋아하는 것:</span> 카페 탐방, 레트로 굿즈 수집
+                </div>
+                
+                <div class="suspect-trait">
+                    <span class="suspect-trait-title">피해자와의 관계:</span> 평소엔 가까웠지만, 최근 시 표절 문제로 갈등
+                </div>
+                
+                <div class="suspect-trait">
+                    <span class="suspect-trait-title">성격:</span> 감정이 풍부하고 수다스러움. 말이 많고 종종 감정이 폭발함.
+                </div>
+            </div>
+
+            <!-- 박주현 -->
+            <div class="suspect-card" data-suspect="juhyun">
+                <div class="suspect-emoji">💻</div>
+                <div class="suspect-name">박주현</div>
+                <div class="suspect-role">보안·코딩 동아리</div>
+                
+                <div class="suspect-trait">
+                    <span class="suspect-trait-title">특기:</span> 알고리즘, CTF, 리눅스 해킹
+                </div>
+                
+                <div class="suspect-trait">
+                    <span class="suspect-trait-title">좋아하는 것:</span> 다크 웹 읽기, 독서
+                </div>
+                
+                <div class="suspect-trait">
+                    <span class="suspect-trait-title">피해자와의 관계:</span> 대화는 적었으나, 윤지우가 주현의 코드를 공개 비판한 적 있음
+                </div>
+                
+                <div class="suspect-trait">
+                    <span class="suspect-trait-title">성격:</span> 말 수 적고 핵심만 말함. 논리 중심 표현, 감정 표현에 무심함.
+                </div>
+            </div>
+
+            <!-- 정세윤 -->
+            <div class="suspect-card" data-suspect="seyun">
+                <div class="suspect-emoji">🎬</div>
+                <div class="suspect-name">정세윤</div>
+                <div class="suspect-role">영상제작 동아리</div>
+                
+                <div class="suspect-trait">
+                    <span class="suspect-trait-title">특기:</span> 영상 편집, 브이로그 제작
+                </div>
+                
+                <div class="suspect-trait">
+                    <span class="suspect-trait-title">좋아하는 것:</span> 밈 수집, 드립치기, 티셔츠 디자인
+                </div>
+                
+                <div class="suspect-trait">
+                    <span class="suspect-trait-title">피해자와의 관계:</span> 윤지우가 몰래 촬영 영상을 유출해 갈등 발생
+                </div>
+                
+                <div class="suspect-trait">
+                    <span class="suspect-trait-title">성격:</span> 유머러스하고 비꼬는 말투. 종종 농담을 섞음. 어딘가 무책임한 느낌도 있음.
+                </div>
+            </div>
+        </div>
+
+        <!-- 돌아가기 버튼 -->
+        <div style="text-align: center; margin-top: 20px;">
+            <button id="back-to-questions-from-identification" class="secondary-button">질문 페이지로 돌아가기</button>
+        </div>
+    </div>
+
+    <!-- 두 번째 사진 형식의 범인 지목 모달 -->
+    <div id="identification-modal" class="identification-modal">
+        <div class="identification-modal-content">
+            <span class="close-identification-modal">&times;</span>
+            
+            <h3 style="text-align: center; margin-bottom: 20px;">범인 지목</h3>
+            
+            <!-- 두 번째 사진 형식의 아이콘 레이아웃 -->
+            <div class="suspect-modal-icons">
+                <div class="suspect-icon" data-suspect="hangyeol">🧪</div>
+                <div class="suspect-icon" data-suspect="soi">📝</div>
+                <div class="suspect-icon" data-suspect="juhyun">💻</div>
+                <div class="suspect-icon" data-suspect="seyun">🎬</div>
+            </div>
+            
+            <div id="selected-suspect-info" style="text-align: center;">
+                <p>범인으로 지목할 용의자를 선택하세요.</p>
+            </div>
+            
+            <div class="identification-buttons">
+                <button class="confirm-identification" id="confirm-identification" disabled>범인 지목하기</button>
+                <button class="cancel-identification" id="cancel-identification">취소</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 범인 지목 카드 클릭 이벤트
+            const suspectCards = document.querySelectorAll('.suspect-card');
+            suspectCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const suspectId = this.getAttribute('data-suspect');
+                    showIdentificationModal(suspectId);
+                });
+            });
+            
+            // 모달 내 아이콘 클릭 이벤트
+            const suspectIcons = document.querySelectorAll('.suspect-icon');
+            suspectIcons.forEach(icon => {
+                icon.addEventListener('click', function() {
+                    // 모든 아이콘에서 active 클래스 제거
+                    suspectIcons.forEach(i => i.classList.remove('active'));
+                    
+                    // 클릭한 아이콘에 active 클래스 추가
+                    this.classList.add('active');
+                    
+                    // 선택한 용의자 정보 표시
+                    const suspectId = this.getAttribute('data-suspect');
+                    updateSelectedSuspectInfo(suspectId);
+                    
+                    // 범인 지목 버튼 활성화
+                    document.getElementById('confirm-identification').disabled = false;
+                });
+            });
+            
+            // 모달 닫기 버튼 이벤트
+            document.querySelector('.close-identification-modal').addEventListener('click', function() {
+                document.getElementById('identification-modal').style.display = 'none';
+            });
+            
+            // 취소 버튼 이벤트
+            document.getElementById('cancel-identification').addEventListener('click', function() {
+                document.getElementById('identification-modal').style.display = 'none';
+            });
+            
+            // 범인 지목 확인 버튼 이벤트
+            document.getElementById('confirm-identification').addEventListener('click', function() {
+                const selectedIcon = document.querySelector('.suspect-icon.active');
+                if (selectedIcon) {
+                    const suspectId = selectedIcon.getAttribute('data-suspect');
+                    accuseSuspect(suspectId);
+                }
+            });
+            
+            // 질문 페이지로 돌아가기 버튼 이벤트
+            document.getElementById('back-to-questions-from-identification').addEventListener('click', function() {
+                // 메인 스크립트의 함수 호출 (script.js에 정의되어 있음)
+                showQuestionSelectScreen();
+            });
+            
+            // 모달 외부 클릭 시 닫기
+            window.addEventListener('click', function(event) {
+                const modal = document.getElementById('identification-modal');
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // 범인 지목 모달 표시 함수
+            function showIdentificationModal(suspectId) {
+                // 해당 용의자 아이콘 활성화
+                const suspectIcons = document.querySelectorAll('.suspect-icon');
+                suspectIcons.forEach(icon => {
+                    icon.classList.remove('active');
+                    if (icon.getAttribute('data-suspect') === suspectId) {
+                        icon.classList.add('active');
+                    }
+                });
+                
+                // 선택한 용의자 정보 표시
+                updateSelectedSuspectInfo(suspectId);
+                
+                // 범인 지목 버튼 활성화
+                document.getElementById('confirm-identification').disabled = false;
+                
+                // 모달 표시
+                document.getElementById('identification-modal').style.display = 'block';
+            }
+            
+            // 선택한 용의자 정보 업데이트 함수
+            function updateSelectedSuspectInfo(suspectId) {
+                const suspectInfo = {
+                    hangyeol: {
+                        name: '이한결',
+                        role: '과학 동아리 회장'
+                    },
+                    soi: {
+                        name: '김소이',
+                        role: '문예부'
+                    },
+                    juhyun: {
+                        name: '박주현',
+                        role: '보안·코딩 동아리'
+                    },
+                    seyun: {
+                        name: '정세윤',
+                        role: '영상제작 동아리'
+                    }
+                };
+                
+                const suspect = suspectInfo[suspectId];
+                if (suspect) {
+                    document.getElementById('selected-suspect-info').innerHTML = `
+                        <p><strong>${suspect.name}</strong>님을 범인으로 지목하시겠습니까?</p>
+                        <p style="color: #6c757d; font-size: 0.9rem;">${suspect.role}</p>
+                        <p style="color: #d00000; margin-top: 10px;">※ 범인 지목은 되돌릴 수 없습니다.</p>
+                    `;
+                }
+            }
+            
+            // 범인 지목 함수
+            function accuseSuspect(suspectId) {
+                // 캐릭터 이름 매핑
+                const characterNames = {
+                    hangyeol: '이한결',
+                    soi: '김소이',
+                    juhyun: '박주현',
+                    seyun: '정세윤'
+                };
+                
+                // 메인 스크립트의 함수 호출 (script.js에 정의되어 있음)
+                if (typeof accuseCharacter === 'function') {
+                    // script.js에 정의된 함수 호출
+                    const character = { id: suspectId, name: characterNames[suspectId] };
+                    accuseCharacter(character);
+                } else {
+                    // 직접 구현
+                    const character = { id: suspectId };
+                    console.log(`범인 지목: ${suspectId}`);
+                    
+                    // 로딩 오버레이 생성 (없는 경우)
+                    let loadingOverlay = document.getElementById('loading-overlay');
+                    if (!loadingOverlay) {
+                        loadingOverlay = document.createElement('div');
+                        loadingOverlay.id = 'loading-overlay';
+                        loadingOverlay.className = 'loading-overlay';
+                        loadingOverlay.style.position = 'fixed';
+                        loadingOverlay.style.top = '0';
+                        loadingOverlay.style.left = '0';
+                        loadingOverlay.style.width = '100%';
+                        loadingOverlay.style.height = '100%';
+                        loadingOverlay.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+                        loadingOverlay.style.display = 'flex';
+                        loadingOverlay.style.flexDirection = 'column';
+                        loadingOverlay.style.justifyContent = 'center';
+                        loadingOverlay.style.alignItems = 'center';
+                        loadingOverlay.style.zIndex = '1000';
+                        
+                        const spinner = document.createElement('div');
+                        spinner.className = 'loading-spinner';
+                        spinner.style.width = '50px';
+                        spinner.style.height = '50px';
+                        spinner.style.border = '5px solid #dee2e6';
+                        spinner.style.borderTop = '5px solid #3a0ca3';
+                        spinner.style.borderRadius = '50%';
+                        spinner.style.animation = 'spin 1s linear infinite';
+                        spinner.style.marginBottom = '1rem';
+                        
+                        const loadingText = document.createElement('div');
+                        loadingText.textContent = '로딩 중...';
+                        
+                        loadingOverlay.appendChild(spinner);
+                        loadingOverlay.appendChild(loadingText);
+                        document.body.appendChild(loadingOverlay);
+                        
+                        // 스피너 애니메이션 스타일 추가
+                        const style = document.createElement('style');
+                        style.textContent = `
+                            @keyframes spin {
+                                0% { transform: rotate(0deg); }
+                                100% { transform: rotate(360deg); }
+                            }
+                        `;
+                        document.head.appendChild(style);
+                    }
+                    
+                    // 로딩 표시
+                    loadingOverlay.style.display = 'flex';
+                    
+                    // 가상의 결과 생성 (API 오류 해결)
+                    setTimeout(() => {
+                        // 랜덤으로 정답 여부 결정 (데모용)
+                        const isCorrect = Math.random() > 0.5;
+                        const culpritId = isCorrect ? suspectId : ['hangyeol', 'soi', 'juhyun', 'seyun'].find(id => id !== suspectId);
+                        
+                        const result = {
+                            correct: isCorrect,
+                            culprit_id: culpritId
+                        };
+                        
+                        // 결과 화면으로 이동
+                        showResultScreen(character, result);
+                        
+                        // 로딩 숨기기
+                        loadingOverlay.style.display = 'none';
+                    }, 1000);
+                    
+                    // 모달 닫기
+                    document.getElementById('identification-modal').style.display = 'none';
+                }
+            }
+            
+            // 결과 화면 표시 함수
+            function showResultScreen(accusedCharacter, result) {
+                // 캐릭터 이모지 매핑
+                const characterEmojis = {
+                    hangyeol: '🧪',
+                    soi: '📝',
+                    juhyun: '💻',
+                    seyun: '🎬'
+                };
+                
+                // 캐릭터 이름 매핑
+                const characterNames = {
+                    hangyeol: '이한결',
+                    soi: '김소이',
+                    juhyun: '박주현',
+                    seyun: '정세윤'
+                };
+                
+                // 기존 컨테이너 내용 저장
+                const originalContent = document.querySelector('.container').innerHTML;
+                
+                // 결과 화면 HTML 생성
+                const resultHTML = `
+                    <div class="result-content">
+                        <h2 class="${result.correct ? 'success' : 'error'}" id="result-title">
+                            ${result.correct ? '정답입니다!' : '오답입니다!'}
+                        </h2>
+                        <div class="result-image" id="result-image">
+                            <div class="character-emoji">${characterEmojis[result.culprit_id] || '👤'}</div>
+                        </div>
+                        <div class="result-text" id="result-text">
+                            ${result.correct ? 
+                                `축하합니다! ${characterNames[accusedCharacter.id]}이(가) AI 범인이었습니다.` : 
+                                `아쉽습니다. 실제 AI 범인은 ${characterNames[result.culprit_id]}이었습니다.`}
+                        </div>
+                        <div class="result-details">
+                            <p>당신의 선택: <span id="player-guess">${characterNames[accusedCharacter.id]}</span></p>
+                            <p>실제 범인: <span id="actual-culprit">${characterNames[result.culprit_id]}</span></p>
+                        </div>
+                        <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px;">
+                            <button class="primary-button" id="restart-button">다시 하기</button>
+                            <button class="secondary-button" id="back-to-identification">돌아가기</button>
+                        </div>
+                    </div>
+                `;
+                
+                // 컨테이너 내용 교체
+                document.querySelector('.container').innerHTML = resultHTML;
+                
+                // 다시 하기 버튼 이벤트
+                document.getElementById('restart-button').addEventListener('click', () => {
+                    location.reload(); // 페이지 새로고침
+                });
+                
+                // 돌아가기 버튼 이벤트
+                document.getElementById('back-to-identification').addEventListener('click', () => {
+                    // 원래 내용으로 복원
+                    document.querySelector('.container').innerHTML = originalContent;
+                    
+                    // 이벤트 리스너 다시 설정
+                    setupEventListeners();
+                });
+            }
+            
+            // 이벤트 리스너 설정 함수 (돌아가기 버튼 클릭 후 재설정용)
+            function setupEventListeners() {
+                // 범인 지목 카드 클릭 이벤트
+                const suspectCards = document.querySelectorAll('.suspect-card');
+                suspectCards.forEach(card => {
+                    card.addEventListener('click', function() {
+                        const suspectId = this.getAttribute('data-suspect');
+                        showIdentificationModal(suspectId);
+                    });
+                });
+                
+                // 질문 페이지로 돌아가기 버튼 이벤트
+                const backButton = document.getElementById('back-to-questions-from-identification');
+                if (backButton) {
+                    backButton.addEventListener('click', function() {
+                        // 메인 스크립트의 함수 호출 (script.js에 정의되어 있음)
+                        if (typeof showQuestionSelectScreen === 'function') {
+                            showQuestionSelectScreen();
+                        } else {
+                            alert('질문 페이지로 돌아갑니다.');
+                            history.back();
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

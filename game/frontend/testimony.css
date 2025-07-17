@@ -1,0 +1,279 @@
+/* 증언 시스템 스타일 */
+
+/* 증언 버튼 스타일 */
+.testimony-button-container {
+    display: inline-block;
+    margin-left: 10px;
+    position: relative;
+}
+
+.testimony-main-button {
+    background-color: #7209b7;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    animation: pulse 2s infinite;
+}
+
+.testimony-main-button:hover {
+    background-color: #5a0991;
+    transform: translateY(-2px);
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* 증언자 선택 모달 */
+.testimony-modal {
+    display: block;
+    position: fixed;
+    z-index: 1002;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    overflow-y: auto;
+}
+
+.testimony-modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+    animation: modalAppear 0.3s ease;
+}
+
+.close-testimony-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #6c757d;
+    cursor: pointer;
+}
+
+.witness-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.witness-card {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    width: 200px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.witness-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.witness-card.viewed {
+    opacity: 0.6;
+    transform: none;
+    box-shadow: none;
+}
+
+.witness-emoji {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.witness-name {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #3a0ca3;
+    margin-bottom: 5px;
+}
+
+.witness-role {
+    color: #6c757d;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+.testimony-button {
+    background-color: #7209b7;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.testimony-button:hover {
+    background-color: #5a0991;
+}
+
+.testimony-button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+/* 증언 내용 모달 */
+.testimony-content-modal {
+    display: block;
+    position: fixed;
+    z-index: 1002;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    overflow-y: auto;
+}
+
+.testimony-content-modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+    animation: modalAppear 0.3s ease;
+}
+
+.close-testimony-content-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #6c757d;
+    cursor: pointer;
+}
+
+.testimony-witness-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.testimony-witness-emoji {
+    font-size: 2.5rem;
+    margin-right: 15px;
+}
+
+.testimony-witness-name {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #3a0ca3;
+    margin-bottom: 5px;
+}
+
+.testimony-witness-role {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.testimony-content {
+    margin-bottom: 30px;
+}
+
+.testimony-bubble {
+    background-color: #f0f2f5;
+    border-radius: 18px;
+    padding: 15px 20px;
+    position: relative;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.testimony-bubble:before {
+    content: "";
+    position: absolute;
+    top: 15px;
+    left: -10px;
+    border-width: 10px 10px 10px 0;
+    border-style: solid;
+    border-color: transparent #f0f2f5 transparent transparent;
+}
+
+.testimony-bubble p {
+    margin: 0;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+.testimony-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.testimony-back-button {
+    background-color: transparent;
+    color: #3a0ca3;
+    border: 1px solid #3a0ca3;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.testimony-back-button:hover {
+    background-color: rgba(58, 12, 163, 0.1);
+}
+
+.testimony-close-button {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.testimony-close-button:hover {
+    background-color: #5a6268;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+    .witness-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .witness-card {
+        width: 100%;
+        max-width: 300px;
+    }
+}

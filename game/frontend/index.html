@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>동아리 살인사건: 범인은 AI다</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="testimony.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <!-- 인트로 화면 -->
+        <div id="intro-screen" class="game-screen active">
+            <div class="intro-content">
+                <h1>동아리 살인사건: 범인은 AI다</h1>
+                <div class="intro-image"></div>
+                <p class="intro-text">
+                    한국과학고등학교에서 발생한 충격적인 살인사건.<br>
+                    방송반 학생 윤지우가 동아리실에서 시체로 발견되었다.<br>
+                    용의자는 각기 다른 동아리에 소속된 4명의 학생들이지만, 그 중 한 명은 인간이 아닌 AI다.<br>
+                    5개의 질문을 통해 AI 범인을 찾아내라!
+                </p>
+                <button id="start-button" class="primary-button">게임 시작하기</button>
+            </div>
+        </div>
+
+        <!-- 스토리 소개 화면 -->
+        <div id="story-screen" class="game-screen">
+            <div class="story-content">
+                <h2>사건 개요</h2>
+                <div class="story-text">
+                    <p>2025년 5월 15일 오후 8시, 한국과학고등학교 동아리실에서 방송반 학생 윤지우(17)가 시체로 발견되었다.</p>
+                    <p>사망 원인은 둔기에 의한 두부 타격. 추정 사망 시각은 오후 6시에서 7시 사이.</p>
+                    <p>사건 당일 동아리실에는 윤지우를 포함한 5명의 학생이 있었으며, 이들은 각각 다른 동아리에 소속되어 있었다.</p>
+                    <p>하지만 경찰은 수사 과정에서 충격적인 사실을 발견했다. 용의자 중 한 명이 인간이 아닌 AI라는 것.</p>
+                    <p>당신은 특별 수사관으로 투입되어 5개의 질문을 통해 AI 범인을 찾아내야 한다.</p>
+                </div>
+                <button id="show-characters-button" class="primary-button">등장인물 소개</button>
+            </div>
+        </div>
+
+        <!-- 캐릭터 소개 화면 -->
+        <div id="character-intro-screen" class="game-screen">
+            <div class="character-intro-content">
+                <h2>등장인물 소개</h2>
+                <div id="character-intro-list" class="character-intro-list">
+                    <!-- 캐릭터 소개가 여기에 동적으로 추가됨 -->
+                </div>
+                <button id="show-difficulty-button" class="primary-button">난이도 선택하기</button>
+            </div>
+        </div>
+
+        <!-- 난이도 선택 화면 -->
+        <div id="difficulty-screen" class="game-screen">
+            <div class="difficulty-content">
+                <h2>난이도 선택</h2>
+                <p class="instruction">게임의 난이도를 선택하세요. 난이도에 따라 질문 수와 AI 응답의 특성이 달라집니다.</p>
+                <div class="difficulty-options">
+                    <div class="difficulty-card" data-difficulty="easy">
+                        <h3>쉬움</h3>
+                        <div class="difficulty-details">
+                            <p><strong>질문 수:</strong> 7개</p>
+                            <p><strong>AI 특성:</strong> 명확하게 드러남</p>
+                            <p><strong>추천:</strong> 처음 플레이하는 분</p>
+                        </div>
+                        <button class="difficulty-button" data-difficulty="easy">선택</button>
+                    </div>
+                    <div class="difficulty-card" data-difficulty="normal">
+                        <h3>보통</h3>
+                        <div class="difficulty-details">
+                            <p><strong>질문 수:</strong> 5개</p>
+                            <p><strong>AI 특성:</strong> 미묘하게 드러남</p>
+                            <p><strong>추천:</strong> 일반적인 게임 경험</p>
+                        </div>
+                        <button class="difficulty-button" data-difficulty="normal">선택</button>
+                    </div>
+                    <div class="difficulty-card" data-difficulty="hard">
+                        <h3>어려움</h3>
+                        <div class="difficulty-details">
+                            <p><strong>질문 수:</strong> 3개</p>
+                            <p><strong>AI 특성:</strong> 매우 미묘함</p>
+                            <p><strong>추천:</strong> 도전을 원하는 분</p>
+                        </div>
+                        <button class="difficulty-button" data-difficulty="hard">선택</button>
+                    </div>
+                </div>
+                <button id="back-to-characters" class="secondary-button">← 등장인물로 돌아가기</button>
+            </div>
+        </div>
+
+        <!-- 질문 선택 화면 -->
+        <div id="question-select-screen" class="game-screen">
+            <h2>질문 선택 <span id="question-count">5/5</span></h2>
+            <p class="instruction">AI 범인을 찾기 위한 질문을 선택하세요.</p>
+
+            <!-- 캐릭터 아바타 목록 -->
+            <div id="character-avatars" class="character-avatars">
+                <!-- 캐릭터 아바타가 여기에 동적으로 추가됨 -->
+            </div>
+
+            <div id="question-list" class="question-list">
+                <!-- 질문 버튼들이 여기에 동적으로 추가됨 -->
+            </div>
+        </div>
+
+        <!-- 대화 화면 -->
+        <div id="chat-screen" class="game-screen">
+            <div class="chat-header">
+                <button id="back-to-questions" class="secondary-button">← 질문으로 돌아가기</button>
+                <h2 id="character-name">캐릭터 이름</h2>
+            </div>
+            <div id="chat-messages" class="chat-messages">
+                <!-- 메시지들이 여기에 동적으로 추가됨 -->
+            </div>
+            <div class="chat-footer">
+                <button id="next-character" class="primary-button">다음 캐릭터에게 질문하기</button>
+            </div>
+        </div>
+
+        <!-- 캐릭터 정보 모달 -->
+        <div id="character-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <div class="character-profile">
+                    <div class="character-emoji"></div>
+                    <h3 class="character-modal-name"></h3>
+                    <p class="character-personality"></p>
+                </div>
+                <div class="character-history">
+                    <h4>이전 대화 내용</h4>
+                    <div class="character-conversations">
+                        <!-- 이전 대화 내용이 여기에 동적으로 추가됨 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 모든 캐릭터 응답 화면 -->
+        <div id="all-responses-screen" class="game-screen">
+            <div class="all-responses-header">
+                <button id="back-to-questions-from-all" class="secondary-button">← 질문으로 돌아가기</button>
+                <h2 id="all-responses-question">질문: </h2>
+            </div>
+            <div id="all-responses-container" class="all-responses-container">
+                <!-- 모든 캐릭터의 응답이 여기에 동적으로 추가됨 -->
+            </div>
+            <div class="all-responses-footer">
+                <button id="continue-investigation" class="primary-button">수사 계속하기</button>
+            </div>
+        </div>
+
+        <!-- 사건 현장 화면 -->
+        <div id="crime-scene-screen" class="game-screen">
+            <div class="crime-scene-header">
+                <h2>사건 현장</h2>
+                <p class="crime-scene-instruction">피해자 주변의 물음표를 클릭하여 단서를 확인하세요. (최대 3개까지 열람 가능)</p>
+            </div>
+            <div class="crime-scene-content">
+                <div class="crime-scene-layout">
+                    <div class="crime-scene-container">
+                        <!-- 사건 현장 배경 -->
+                        <div class="crime-scene-background">
+                            <!-- 피해자 위치 -->
+                            <div class="victim-location">
+                                <div class="victim-body">💀</div>
+                            </div>
+
+                            <!-- 물음표 모달들 (피해자 주변에 배치) -->
+                            <div class="evidence-boxes-around">
+                                <div class="evidence-box-item question-mark" data-id="1" style="top: 30%; left: 20%;">❓
+                                </div>
+                                <div class="evidence-box-item question-mark" data-id="2" style="top: 20%; left: 70%;">❓
+                                </div>
+                                <div class="evidence-box-item question-mark" data-id="3" style="top: 60%; left: 15%;">❓
+                                </div>
+                                <div class="evidence-box-item question-mark" data-id="4" style="top: 45%; left: 80%;">❓
+                                </div>
+                                <div class="evidence-box-item question-mark" data-id="5" style="top: 75%; left: 65%;">❓
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 열어본 증거품 섹션 -->
+                <div class="opened-evidence-section">
+                    <h3>발견한 단서</h3>
+                    <div class="opened-evidence-list" id="opened-evidence-list">
+                        <!-- 여기에 열어본 증거품들이 추가됩니다 -->
+                    </div>
+                </div>
+
+                <!-- 돌아가기 버튼 -->
+                <div style="text-align: center; margin-top: 20px;">
+                    <button id="back-to-questions-from-scene" class="secondary-button">질문 페이지로 돌아가기</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 증거품 상세 모달 -->
+        <div id="evidence-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <div class="evidence-detail">
+                    <div class="evidence-emoji" id="evidence-emoji"></div>
+                    <div class="evidence-name" id="evidence-name"></div>
+                    <div class="evidence-owner" id="evidence-owner"></div>
+                    <div class="evidence-description" id="evidence-description"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 캐릭터 선택 화면 -->
+        <div id="character-select-screen" class="game-screen">
+            <h2>AI 범인은 누구일까요?</h2>
+            <p class="instruction">지금까지의 대화를 바탕으로 AI 범인을 선택하세요.</p>
+            <div id="character-list" class="character-list">
+                <!-- 캐릭터 버튼들이 여기에 동적으로 추가됨 -->
+            </div>
+        </div>
+
+        <!-- 결과 화면 -->
+        <div id="result-screen" class="game-screen">
+            <div class="result-content">
+                <h2 id="result-title">결과</h2>
+                <div id="result-image" class="result-image"></div>
+                <p id="result-text" class="result-text"></p>
+                <div class="result-details">
+                    <p>당신의 선택: <span id="player-guess"></span></p>
+                    <p>실제 범인: <span id="actual-culprit"></span></p>
+                </div>
+                <button id="restart-button" class="primary-button">다시 하기</button>
+            </div>
+        </div>
+
+        <!-- 로딩 오버레이 -->
+        <div id="loading-overlay" class="loading-overlay">
+            <div class="loading-spinner"></div>
+            <p>로딩 중...</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="testimony.js"></script>
+</body>
+
+</html>

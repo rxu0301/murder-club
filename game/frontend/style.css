@@ -1,0 +1,2163 @@
+/* 기본 스타일 */
+:root {
+    --primary-color: #3a0ca3;
+    --secondary-color: #4262ed;
+    --accent-color: #7209b7;
+    --background-color: #f8f9fa;
+    --text-color: #212529;
+    --light-text: #6c757d;
+    --border-color: #dee2e6;
+    --success-color: #38b000;
+    --error-color: #d00000;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --modal-bg: rgba(0, 0, 0, 0.7);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    position: relative;
+}
+
+h1,
+h2,
+h3 {
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+button {
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 500;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+}
+
+.primary-button {
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 1rem;
+}
+
+.primary-button:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+.secondary-button {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    font-size: 0.9rem;
+}
+
+.secondary-button:hover {
+    background-color: rgba(58, 12, 163, 0.1);
+}
+
+.instruction {
+    margin-bottom: 1.5rem;
+    color: var(--light-text);
+}
+
+/* 게임 화면 스타일 */
+.game-screen {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.game-screen.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* 인트로 화면 */
+.intro-content {
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.intro-image {
+    width: 100%;
+    height: 200px;
+    background-color: #ddd;
+    margin: 1.5rem 0;
+    background-image: url('https://via.placeholder.com/800x200?text=동아리+살인사건');
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+}
+
+.intro-text {
+    margin-bottom: 2rem;
+    line-height: 1.8;
+}
+
+/* 질문 선택 화면 */
+.progress-container {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--secondary-color) 0%, var(--accent-color) 100%);
+    transition: width 0.3s ease;
+    border-radius: 10px;
+}
+
+.progress-text {
+    font-size: 14px;
+    color: var(--light-text);
+    font-weight: 500;
+}
+
+.question-category-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.category-tab {
+    padding: 8px 16px;
+    background: #f5f5f5;
+    border: 2px solid var(--border-color);
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--light-text);
+}
+
+.category-tab:hover {
+    background: #e8e8e8;
+    border-color: var(--secondary-color);
+}
+
+.category-tab.active {
+    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%);
+    color: white;
+    border-color: var(--secondary-color);
+}
+
+.question-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.question-button {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    text-align: left;
+    font-size: 1rem;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.question-button:hover {
+    border-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.question-button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#question-count {
+    color: var(--accent-color);
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+/* 대화 화면 */
+.chat-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.chat-header h2 {
+    margin-left: 1rem;
+    margin-bottom: 0;
+}
+
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: 60vh;
+    overflow-y: auto;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    margin-bottom: 1rem;
+}
+
+.message {
+    max-width: 80%;
+    padding: 10px 15px;
+    border-radius: 18px;
+    position: relative;
+    animation: messageAppear 0.3s ease;
+}
+
+@keyframes messageAppear {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.user-message {
+    align-self: flex-end;
+    background-color: var(--secondary-color);
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+.character-message {
+    align-self: flex-start;
+    background-color: #e9ecef;
+    color: var(--text-color);
+    border-bottom-left-radius: 4px;
+}
+
+.chat-footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* 캐릭터 선택 화면 */
+.character-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 1.5rem;
+}
+
+.character-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    min-height: 220px;
+}
+
+.character-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.character-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #ddd;
+    margin: 0 auto 10px;
+}
+
+.character-name {
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.character-role {
+    font-size: 0.8rem;
+    color: var(--light-text);
+}
+
+/* 결과 화면 */
+.result-content {
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.result-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #ddd;
+    margin: 1.5rem auto;
+}
+
+.result-text {
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+}
+
+.result-details {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.success {
+    color: var(--success-color);
+}
+
+.error {
+    color: var(--error-color);
+}
+
+/* 로딩 오버레이 */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    display: none;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid var(--border-color);
+    border-top: 5px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .chat-messages {
+        height: 50vh;
+    }
+
+    .character-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    .intro-image {
+        height: 150px;
+    }
+
+    .chat-messages {
+        height: 60vh;
+    }
+
+    .message {
+        max-width: 90%;
+    }
+}
+
+/*
+ 스토리 소개 화면 */
+.story-content {
+    padding: 1.5rem 0;
+}
+
+.story-text {
+    background-color: white;
+    border-radius: 7px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow);
+    line-height: 1.8;
+}
+
+.story-text p {
+    margin-bottom: 1rem;
+}
+
+.story-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* 캐릭터 소개 화면 */
+.character-intro-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    margin: 2rem 0;
+}
+
+.character-intro-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.character-emoji {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.character-intro-name {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+.character-intro-role {
+    font-size: 0.9rem;
+    color: var(--light-text);
+    margin-bottom: 1rem;
+}
+
+.character-intro-desc {
+    font-size: 0.9rem;
+    text-align: left;
+}
+
+/* 캐릭터 아바타 목록 */
+.character-avatars {
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 30px;
+    margin-bottom: 2rem;
+    overflow-x: auto;
+    padding: 15px 0;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.character-avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.character-avatar:hover {
+    transform: translateY(-5px);
+}
+
+.avatar-emoji {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.avatar-name {
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* 캐릭터 모달 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--modal-bg);
+    overflow-y: auto;
+}
+
+.modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: var(--shadow);
+    position: relative;
+    animation: modalAppear 0.3s ease;
+}
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--light-text);
+    cursor: pointer;
+}
+
+.character-profile {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.character-profile .character-emoji {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.character-modal-name {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+.character-personality {
+    color: var(--light-text);
+}
+
+.character-history h4 {
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.character-conversations {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.conversation-item {
+    background-color: var(--background-color);
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.conversation-question {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.conversation-answer {
+    color: var(--text-color);
+}
+
+/* 모든 캐릭터 응답 화면 */
+.all-responses-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.all-responses-header h2 {
+    margin-left: 1rem;
+    margin-bottom: 0;
+}
+
+.all-responses-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 2rem;
+}
+
+.character-response-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+}
+
+.response-character-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.response-emoji {
+    font-size: 2rem;
+    margin-right: 1rem;
+}
+
+.response-character-name {
+    font-weight: 500;
+    color: var(--primary-color);
+}
+
+.response-text {
+    line-height: 1.6;
+}
+
+.all-responses-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+/* 범인 지목 페이지 스타일 */
+.character-cards-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    margin-top: 1.5rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.suspect-cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 1.5rem;
+}
+
+.suspect-card {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.suspect-card:hover {
+    border-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.suspect-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.suspect-emoji {
+    font-size: 2rem;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--background-color);
+    border-radius: 50%;
+}
+
+.suspect-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.suspect-name {
+    font-weight: 500;
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    margin-bottom: 2px;
+}
+
+.suspect-role {
+    font-size: 0.9rem;
+    color: var(--light-text);
+}
+
+.guess-button {
+    background-color: var(--error-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.guess-button:hover {
+    background-color: #b00000;
+    transform: translateY(-2px);
+}
+
+/* 확인 모달 스타일 */
+.confirmation-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--modal-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1002;
+}
+
+.confirmation-modal-content {
+    background-color: white;
+    border-radius: 8px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    width: 90%;
+    animation: modalAppear 0.3s ease;
+}
+
+.confirmation-modal-content h3 {
+    margin-bottom: 15px;
+    color: var(--primary-color);
+}
+
+.confirmation-modal-content p {
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.confirmation-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.confirm-button {
+    background-color: var(--error-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.confirm-button:hover {
+    background-color: #b00000;
+}
+
+.cancel-button {
+    background-color: var(--light-text);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cancel-button:hover {
+    background-color: #5a6268;
+}
+
+/* 모든 응답 화면 스타일 개선 */
+.all-responses-container {
+    margin-bottom: 2rem;
+}
+
+/* 사건 현장 화면 스타일 */
+.crime-scene-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.crime-scene-header h2 {
+    margin-left: 1rem;
+    margin-bottom: 0;
+}
+
+.crime-scene-instruction {
+    margin: 10px 0;
+    color: var(--light-text);
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.crime-scene-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.crime-scene-layout {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+}
+
+.room-layout {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 15px;
+    min-height: 300px;
+    background-color: #f8f9fa;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    position: relative;
+}
+
+.room-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--text-color);
+}
+
+.room-item:hover {
+    border-color: var(--secondary-color);
+    background-color: rgba(67, 97, 238, 0.1);
+    transform: scale(1.05);
+}
+
+.room-item.bookshelf {
+    background-color: #8B4513;
+    color: white;
+}
+
+.room-item.whiteboard {
+    background-color: #f0f0f0;
+    border: 3px solid #333;
+}
+
+.room-item.computer {
+    background-color: #2c3e50;
+    color: white;
+}
+
+.room-item.experiment-table {
+    background-color: #95a5a6;
+    color: white;
+}
+
+.room-item.sofa {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.room-item.entrance {
+    background-color: #27ae60;
+    color: white;
+}
+
+.room-item.window {
+    background-color: #3498db;
+    color: white;
+}
+
+/* 피해자 위치 (중앙) */
+.victim-location {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 10;
+}
+
+.victim-body {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--error-color);
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    border: 2px solid var(--error-color);
+}
+
+/* 피해자 주변 증거품 상자들 */
+.evidence-boxes-around {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.evidence-box-mystery {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.evidence-box-mystery:hover {
+    transform: scale(1.1);
+}
+
+.mystery-box {
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border: 2px solid var(--accent-color);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
+}
+
+.evidence-box-mystery.opened .mystery-box {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+    color: white;
+}
+
+.box-number {
+    font-size: 0.7rem;
+    color: var(--light-text);
+    font-weight: 500;
+}
+
+/* 열어본 증거품 섹션 */
+.opened-evidence-section {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+}
+
+.opened-evidence-section h3 {
+    margin-bottom: 15px;
+    color: var(--primary-color);
+}
+
+.opened-evidence-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.opened-evidence-card {
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 200px;
+}
+
+.opened-evidence-card:hover {
+    border-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.evidence-summary {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.evidence-emoji-small {
+    font-size: 1.5rem;
+}
+
+.evidence-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.evidence-name-small {
+    font-weight: 500;
+    color: var(--primary-color);
+    margin-bottom: 2px;
+}
+
+.evidence-owner-small {
+    font-size: 0.8rem;
+    color: var(--light-text);
+}
+
+/* 증거품 상세 모달 */
+.evidence-detail {
+    text-align: center;
+}
+
+.evidence-detail .evidence-emoji {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.evidence-detail .evidence-name {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+.evidence-detail .evidence-owner {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: var(--light-text);
+    font-weight: 500;
+}
+
+.evidence-detail .evidence-description {
+    text-align: left;
+    line-height: 1.6;
+}
+
+.evidence-detail .evidence-description p {
+    margin-bottom: 10px;
+}
+
+/* 모바일 환경에서 사건 현장 레이아웃 조정 */
+@media (max-width: 768px) {
+    .room-layout {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+    }
+
+    .opened-evidence-list {
+        flex-direction: column;
+    }
+
+    .opened-evidence-card {
+        min-width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .room-layout {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(8, 1fr);
+        min-height: 400px;
+    }
+
+    .evidence-boxes-around {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .mystery-box {
+        width: 35px;
+        height: 35px;
+        font-size: 1.2rem;
+    }
+}
+
+/* 사건 현장 화면 스타일 */
+.crime-scene-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.crime-scene-header h2 {
+    margin-bottom: 0.5rem;
+    text-align: center;
+    color: var(--primary-color);
+}
+
+.crime-scene-instruction {
+    text-align: center;
+    color: var(--light-text);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.crime-scene-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.crime-scene-layout {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    position: relative;
+}
+
+.crime-scene-container {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    background-color: #f8f9fa;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.crime-scene-background {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 피해자 위치 스타일 */
+.victim-location {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+}
+
+.victim-body {
+    font-size: 4rem;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* 피해자 주변 증거품 스타일 */
+.evidence-boxes-around {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.evidence-box-item {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.evidence-box-item:hover {
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.evidence-box-item.question-mark {
+    background-color: white;
+    color: #d00000;
+    font-weight: bold;
+}
+
+.evidence-box-item.opened {
+    background-color: #f8f9fa;
+    color: #333;
+    border: 2px solid var(--success-color);
+}
+
+/* 열어본 증거품 섹션 */
+.opened-evidence-section {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+}
+
+.opened-evidence-section h3 {
+    margin-bottom: 15px;
+    color: var(--primary-color);
+    text-align: center;
+}
+
+.opened-evidence-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.opened-evidence-item {
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.opened-evidence-item:hover {
+    border-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.evidence-emoji {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.evidence-name {
+    font-weight: 500;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.evidence-owner {
+    font-size: 0.9rem;
+    color: var(--light-text);
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.evidence-description {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    text-align: center;
+}
+
+/* 증거품 상세 모달 */
+.evidence-detail {
+    text-align: center;
+}
+
+.evidence-detail .evidence-emoji {
+    font-size: 4rem;
+    margin-bottom: 15px;
+}
+
+.evidence-detail .evidence-name {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+}
+
+.evidence-detail .evidence-owner {
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+.evidence-detail .evidence-description {
+    line-height: 1.6;
+}
+
+/* 모바일 환경에서 캐릭터 카드 레이아웃 조정 */
+@media (max-width: 768px) {
+    .room-layout {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+    }
+
+    .clue-list {
+        grid-template-columns: 1fr;
+    }
+
+    .evidence-box-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .character-cards-container {
+        grid-template-columns: 1fr;
+    }
+
+    .character-avatars {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 10px;
+        margin-bottom: 1rem;
+    }
+
+    .character-avatar {
+        flex: 0 0 auto;
+        margin-right: 10px;
+    }
+
+    .room-layout {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(8, 1fr);
+        min-height: 400px;
+    }
+
+    .suspect-cards-container {
+        gap: 10px;
+    }
+
+    .suspect-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .suspect-info {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* 난이도 선택
+ 화면 */
+.difficulty-content {
+    padding: 1.5rem 0;
+    text-align: center;
+}
+
+.difficulty-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 2rem 0;
+}
+
+.difficulty-card {
+    background-color: white;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.difficulty-card:hover {
+    border-color: var(--secondary-color);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.difficulty-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.difficulty-details {
+    margin-bottom: 1.5rem;
+}
+
+.difficulty-details p {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.difficulty-button {
+    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.difficulty-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(67, 97, 238, 0.3);
+}
+
+/* 모바일 환경에서 난이도 카드 레이아웃 조정 */
+@media (max-width: 768px) {
+    .difficulty-options {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .difficulty-card {
+        padding: 1rem;
+    }
+}/* 증거품
+ 질문 관련 스타일 */
+.evidence-question-btn {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.evidence-question-btn:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+.evidence-question-modal-content {
+    max-width: 500px;
+    padding: 25px;
+}
+
+.evidence-question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.evidence-question-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.evidence-question-info .evidence-emoji {
+    font-size: 2.5rem;
+    margin-bottom: 0;
+}
+
+.evidence-info .evidence-name {
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+}
+
+.evidence-info .evidence-owner {
+    font-size: 0.9rem;
+    color: var(--light-text);
+}
+
+.evidence-question-remaining {
+    font-weight: 500;
+    color: var(--accent-color);
+}
+
+.evidence-question-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.evidence-question-button {
+    text-align: left;
+    padding: 12px 15px;
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.evidence-question-button:hover {
+    border-color: var(--secondary-color);
+    background-color: rgba(67, 97, 238, 0.05);
+}
+}5);
+}
+
+.evidence-question-button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #f5f5f5;
+}
+
+.evidence-question-response {
+    background-color: var(--background-color);
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 10px;
+}
+
+.question-text {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+}
+
+.answer-text {
+    color: var(--text-color);
+    line-height: 1.5;
+}
+
+.no-questions {
+    color: var(--error-color);
+    text-align: center;
+    font-weight: 500;
+}
+
+/* 발견한 단서 섹션 스타일 개선 */
+.opened-evidence-section h3 {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.opened-evidence-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.opened-evidence-item {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.opened-evidence-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.opened-evidence-item .evidence-emoji {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.opened-evidence-item .evidence-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+}
+
+.opened-evidence-item .evidence-owner {
+    font-size: 0.9rem;
+    color: var(--light-text);
+    margin-bottom: 10px;
+}
+
+.opened-evidence-item .evidence-description {
+    font-size: 0.9rem;
+    text-align: center;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+/* 모바일 환경 대응 */
+@media (max-width: 768px) {
+    .evidence-question-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .evidence-question-remaining {
+        margin-top: 10px;
+    }
+    
+    .opened-evidence-list {
+        grid-template-columns: 1fr;
+    }
+}/*
+ 범인 지목 페이지 스타일 개선 */
+.character-cards-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 20px;
+    margin: 30px auto;
+    max-width: 800px;
+}
+
+.character-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.character-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.character-card-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.character-card .character-emoji {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+}
+
+.character-card .character-name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.character-card .character-role {
+    font-size: 0.9rem;
+    color: var(--light-text);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.character-card .guess-button {
+    background-color: var(--error-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: auto;
+}
+
+.character-card .guess-button:hover {
+    background-color: #b00000;
+    transform: translateY(-2px);
+}
+
+/* 발견한 단서 섹션 스타일 개선 - 가로 정렬 */
+.opened-evidence-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.opened-evidence-item {
+    flex: 0 0 calc(33.333% - 20px);
+    max-width: 300px;
+    min-width: 250px;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.opened-evidence-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.opened-evidence-item .evidence-emoji {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.opened-evidence-item .evidence-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.opened-evidence-item .evidence-owner {
+    font-size: 0.9rem;
+    color: var(--light-text);
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.opened-evidence-item .evidence-description {
+    font-size: 0.9rem;
+    text-align: center;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+@media (max-width: 768px) {
+    .character-cards-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+    
+    .opened-evidence-item {
+        flex: 0 0 100%;
+    }
+}/* 범인 
+지목 페이지 스타일 개선 - 2x2 그리드 */
+.character-cards-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 20px;
+    margin: 30px auto;
+    max-width: 800px;
+}
+
+.character-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    height: 100%;
+    min-height: 250px;
+    position: relative;
+}
+
+.character-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.character-card-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.character-card .character-emoji {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+}
+
+.character-card .character-name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.character-card .character-role {
+    font-size: 0.9rem;
+    color: var(--light-text);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.character-card .guess-button {
+    background-color: var(--error-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: auto;
+}
+
+.character-card .guess-button:hover {
+    background-color: #b00000;
+    transform: translateY(-2px);
+}
+
+/* 모바일 환경에서 1열로 표시 */
+@media (max-width: 768px) {
+    .character-cards-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .character-card {
+        min-height: 200px;
+    }
+}/* 범인 지목 페이
+지 스타일 개선 - 2x2 그리드 */
+.character-cards-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 20px;
+    margin: 30px auto;
+    max-width: 800px;
+}
+
+.character-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    height: 100%;
+    min-height: 250px;
+    position: relative;
+}
+
+.character-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.character-card-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.character-card .character-emoji {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+}
+
+.character-card .character-name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.character-card .character-role {
+    font-size: 0.9rem;
+    color: var(--light-text);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.character-card .guess-button {
+    background-color: var(--error-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: auto;
+}
+
+.character-card .guess-button:hover {
+    background-color: #b00000;
+    transform: translateY(-2px);
+}
+
+/* 발견한 단서 섹션 스타일 개선 - 가로 정렬 */
+.opened-evidence-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.opened-evidence-item {
+    flex: 0 0 calc(33.333% - 20px);
+    max-width: 300px;
+    min-width: 250px;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.opened-evidence-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.opened-evidence-item .evidence-emoji {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.opened-evidence-item .evidence-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.opened-evidence-item .evidence-owner {
+    font-size: 0.9rem;
+    color: var(--light-text);
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.opened-evidence-item .evidence-description {
+    font-size: 0.9rem;
+    text-align: center;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+@media (max-width: 768px) {
+    .character-cards-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+    
+    .opened-evidence-item {
+        flex: 0 0 100%;
+    }
+}/
+* 범인 지목 페이지 스타일 - 두 번째 사진 형식 */
+.character-avatar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin: 20px auto;
+    padding: 15px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    max-width: 800px;
+}
+
+.character-avatar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.character-avatar-item:hover, 
+.character-avatar-item.active {
+    background-color: rgba(67, 97, 238, 0.1);
+}
+
+.avatar-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 8px;
+}
+
+.avatar-circle .avatar-emoji {
+    font-size: 2rem;
+}
+
+.avatar-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--primary-color);
+}
+
+/* 캐릭터 상세 카드 스타일 - 첫 번째 사진 구조 */
+.character-detail-container {
+    margin: 20px auto;
+    max-width: 800px;
+}
+
+.character-detail-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: var(--shadow);
+}
+
+.character-detail-header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.character-detail-emoji {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.character-detail-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+}
+
+.character-detail-role {
+    font-size: 1rem;
+    color: var(--light-text);
+}
+
+.character-detail-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.character-detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.detail-label {
+    font-weight: 500;
+    color: var(--primary-color);
+}
+
+.detail-value {
+    line-height: 1.5;
+}
+
+.character-detail-card .guess-button {
+    display: block;
+    width: 100%;
+    max-width: 200px;
+    margin: 20px auto 0;
+    padding: 12px 20px;
+    background-color: var(--error-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.character-detail-card .guess-button:hover {
+    background-color: #b00000;
+    transform: translateY(-2px);
+}
+
+.sub-instruction {
+    text-align: center;
+    color: var(--light-text);
+    margin-top: -10px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .character-avatar-container {
+        flex-wrap: wrap;
+    }
+}

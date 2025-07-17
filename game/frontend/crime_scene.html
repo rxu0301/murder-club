@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사건 현장 - 동아리 살인사건</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="crime-scene-header">
+            <h2>사건 현장</h2>
+        </div>
+        <div class="crime-scene-instruction">
+            피해자 주변의 물음표를 클릭하여 단서를 확인하세요. (최대 3개까지 열람 가능)
+        </div>
+
+        <div class="crime-scene-content">
+            <div class="crime-scene-layout">
+                <div class="crime-scene-container">
+                    <!-- 사건 현장 배경 -->
+                    <div class="crime-scene-background">
+                        <!-- 피해자 위치 -->
+                        <div class="victim-location">
+                            <div class="victim-body">💀</div>
+                        </div>
+                        
+                        <!-- 물음표 모달들 (피해자 주변에 배치) -->
+                        <div class="evidence-boxes-around">
+                            <div class="evidence-box-item question-mark" data-id="1" style="top: 30%; left: 20%;">❓</div>
+                            <div class="evidence-box-item question-mark" data-id="2" style="top: 20%; left: 70%;">❓</div>
+                            <div class="evidence-box-item question-mark" data-id="3" style="top: 60%; left: 15%;">❓</div>
+                            <div class="evidence-box-item question-mark" data-id="4" style="top: 45%; left: 80%;">❓</div>
+                            <div class="evidence-box-item question-mark" data-id="5" style="top: 75%; left: 65%;">❓</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 열어본 증거품 섹션 -->
+            <div class="opened-evidence-section">
+                <h3>발견한 단서</h3>
+                <div class="opened-evidence-list" id="opened-evidence-list">
+                    <!-- 여기에 열어본 증거품들이 추가됩니다 -->
+                </div>
+            </div>
+
+            <!-- 돌아가기 버튼 -->
+            <div style="text-align: center; margin-top: 20px;">
+                <button id="back-to-questions-from-scene" class="secondary-button">질문 페이지로 돌아가기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 증거품 상세 모달 -->
+    <div id="evidence-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="evidence-detail">
+                <div class="evidence-emoji" id="evidence-emoji"></div>
+                <div class="evidence-name" id="evidence-name"></div>
+                <div class="evidence-owner" id="evidence-owner"></div>
+                <div class="evidence-description" id="evidence-description"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // 사건 현장 관련 스크립트
+        document.addEventListener('DOMContentLoaded', function() {
+            // 증거품 데이터
+            const evidenceData = [
+                {
+                    id: 1,
+                    emoji: "📱",
+                    name: "스마트폰",
+                    owner: "피해자 소유",
+                    description: "화면이 깨져 있고, 마지막으로 열린 앱은 녹음 앱이었다. 녹음 파일은 삭제된 상태."
+                },
+                {
+                    id: 2,
+                    emoji: "☕",
+                    name: "커피 컵",
+                    owner: "이한결 소유",
+                    description: "과학 동아리 회장 이한결의 개인 텀블러. 커피가 반쯤 남아있고 지문이 선명하게 남아있다."
+                },
+                {
+                    id: 3,
+                    emoji: "📝",
+                    name: "메모장",
+                    owner: "김소이 소유",
+                    description: "문예부 김소이의 메모장. 찢겨진 흔적이 있고, '표절' 이라는 단어가 여러 번 적혀있다."
+                },
+                {
+                    id: 4,
+                    emoji: "💻",
+                    name: "노트북",
+                    owner: "박주현 소유",
+                    description: "보안 동아리 박주현의 노트북. 암호가 걸려있고, 최근에 해킹 관련 검색 기록이 있다."
+                },
+                {
+                    id: 5,
+                    emoji: "🎬",
+                    name: "카메라",
+                    owner: "정세윤 소유",
+                    description: "영상 동아리 정세윤의 카메라. 메모리 카드가 없는 상태이며, 지문이 여러 개 발견되었다."
+                }
+            ];
+
+            // 열람한 증거품 ID를 저장하는 배열
+            let openedEvidenceIds = [];
+            
+            // 물음표 클릭 이벤트 처리
+            const questionMarks = document.querySelectorAll('.evidence-box-item.question-mark');
+            questionMarks.forEach(mark => {
+                mark.addEventListener('click', function() {
+                    const evidenceId = parseInt(this.getAttribute('data-id'));
+                    
+                    // 이미 열람한 증거품인지 확인
+                    if (openedEvidenceIds.includes(evidenceId)) {
+                        // 이미 열람한 증거품이면 모달로 상세 정보 표시
+                        showEvidenceDetail(evidenceId);
+                        return;
+                    }
+                    
+                    // 최대 3개까지만 열람 가능
+                    if (openedEvidenceIds.length >= 3) {
+                        alert('더 이상 단서를 열람할 수 없습니다. (최대 3개)');
+                        return;
+                    }
+                    
+                    // 증거품 열람 처리
+                    openEvidence(evidenceId);
+                });
+            });
+            
+            // 증거품 열람 함수
+            function openEvidence(evidenceId) {
+                // 해당 ID의 증거품 찾기
+                const evidence = evidenceData.find(item => item.id === evidenceId);
+                if (!evidence) return;
+                
+                // 열람한 증거품 ID 배열에 추가
+                openedEvidenceIds.push(evidenceId);
+                
+                // 물음표 아이콘 변경 (열람 표시)
+                const questionMark = document.querySelector(`.evidence-box-item[data-id="${evidenceId}"]`);
+                questionMark.textContent = evidence.emoji;
+                questionMark.classList.remove('question-mark');
+                questionMark.classList.add('opened');
+                
+                // 열람한 증거품 목록에 추가
+                addToOpenedEvidenceList(evidence);
+                
+                // 증거품 상세 정보 모달 표시
+                showEvidenceDetail(evidenceId);
+            }
+            
+            // 열람한 증거품 목록에 추가하는 함수
+            function addToOpenedEvidenceList(evidence) {
+                const openedList = document.getElementById('opened-evidence-list');
+                
+                const evidenceItem = document.createElement('div');
+                evidenceItem.className = 'opened-evidence-item';
+                evidenceItem.innerHTML = `
+                    <div class="evidence-emoji">${evidence.emoji}</div>
+                    <div class="evidence-name">${evidence.name}</div>
+                    <div class="evidence-owner">${evidence.owner}</div>
+                    <div class="evidence-description">${evidence.description}</div>
+                `;
+                
+                // 클릭 시 상세 정보 모달 표시
+                evidenceItem.addEventListener('click', () => {
+                    showEvidenceDetail(evidence.id);
+                });
+                
+                openedList.appendChild(evidenceItem);
+            }
+            
+            // 증거품 상세 정보 모달 표시 함수
+            function showEvidenceDetail(evidenceId) {
+                const evidence = evidenceData.find(item => item.id === evidenceId);
+                if (!evidence) return;
+                
+                // 모달 내용 설정
+                document.getElementById('evidence-emoji').textContent = evidence.emoji;
+                document.getElementById('evidence-name').textContent = evidence.name;
+                document.getElementById('evidence-owner').textContent = evidence.owner;
+                document.getElementById('evidence-description').textContent = evidence.description;
+                
+                // 모달 표시
+                document.getElementById('evidence-modal').style.display = 'block';
+            }
+            
+            // 모달 닫기 버튼 이벤트
+            document.querySelector('#evidence-modal .close-modal').addEventListener('click', function() {
+                document.getElementById('evidence-modal').style.display = 'none';
+            });
+            
+            // 모달 외부 클릭 시 닫기
+            window.addEventListener('click', function(event) {
+                const modal = document.getElementById('evidence-modal');
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // 질문 페이지로 돌아가기 버튼 이벤트
+            document.getElementById('back-to-questions-from-scene').addEventListener('click', function() {
+                // 메인 스크립트의 함수 호출 (script.js에 정의되어 있음)
+                showQuestionSelectScreen();
+            });
+        });
+    </script>
+</body>
+</html>
